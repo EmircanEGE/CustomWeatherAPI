@@ -10,17 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
-{
-    var configuration = provider.GetRequiredService<IConfiguration>();
-    var redisConnectionString = configuration.GetConnectionString("Redis");
-    return ConnectionMultiplexer.Connect(redisConnectionString);
-});
+var redisConfiguration = builder.Configuration.GetConnectionString("Redis");
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConfiguration));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IRedisManager<WeatherResponse>, RedisManager<WeatherResponse>>();
+builder.Services.AddSingleton<IRedisManager, RedisManager>();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.AddSingleton<IWeatherApiClient, WeatherApiClient>();
 

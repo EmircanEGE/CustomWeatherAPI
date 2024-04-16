@@ -4,5 +4,5 @@ namespace WeatherApi.Infastructer.WeatherApi;
 
 public interface IWeatherApiClient
 {
-    WeatherResponse GetWeather(string location);
+    Task<WeatherResponse> GetWeather(string location);
 }

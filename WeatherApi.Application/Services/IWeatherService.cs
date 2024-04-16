@@ -4,5 +4,5 @@ namespace WeatherApi.Application.Services;
 
 public interface IWeatherService
 {
-    WeatherResponse GetWeather(string city);
+    Task<WeatherResponse> GetWeather(string city);
 }

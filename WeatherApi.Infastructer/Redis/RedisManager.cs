@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace WeatherApi.Infastructer.Redis;
 
-public class RedisManager<T> : IRedisManager<T> where T : class
+public class RedisManager : IRedisManager
 {
     private readonly IDatabase _cache;
     private readonly IConnectionMultiplexer _redisConnection;
@@ -14,16 +13,14 @@ public class RedisManager<T> : IRedisManager<T> where T : class
         _cache = redisConnection.GetDatabase();
     }
 
-    public T GetValue(string key)
+    public async Task<RedisValue> GetAsync(string key)
     {
-        string cachedData = _cache.StringGet(key);
-        if (!string.IsNullOrEmpty(cachedData)) return JsonConvert.DeserializeObject<T>(cachedData);
-        return null;
+        return await _cache.StringGetAsync(key);
+        
     }
 
-    public void SetValue(string key, T value)
+    public async Task SetAsync(string key, string value, TimeSpan expireTime)
     {
-        var serilizedValue = JsonConvert.SerializeObject(value);
-        _cache.StringSet(key, serilizedValue, TimeSpan.FromMinutes(10));
+        await _cache.StringSetAsync(key, value, expireTime);
     }
 }

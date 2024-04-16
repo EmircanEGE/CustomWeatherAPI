@@ -1,7 +1,9 @@
-﻿namespace WeatherApi.Infastructer.Redis;
+﻿using StackExchange.Redis;
 
-public interface IRedisManager<T>
+namespace WeatherApi.Infastructer.Redis;
+
+public interface IRedisManager
 {
-    T GetValue(string key);
-    public void SetValue(string key, T value);
+    Task<RedisValue> GetAsync(string key);
+    Task SetAsync(string key, string value, TimeSpan expireTime);
 }

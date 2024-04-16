@@ -1,4 +1,5 @@
-﻿using WeatherApi.Infastructer.Redis;
+﻿using Newtonsoft.Json;
+using WeatherApi.Infastructer.Redis;
 using WeatherApi.Infastructer.WeatherApi;
 using WeatherApi.Infastructer.WeatherApi.Models;
 
@@ -6,22 +7,23 @@ namespace WeatherApi.Application.Services;
 
 public class WeatherService : IWeatherService
 {
-    private readonly IRedisManager<WeatherResponse> _redisManager;
+    private readonly IRedisManager _redisManager;
     private readonly IWeatherApiClient _weatherApiClient;
 
-    public WeatherService(IWeatherApiClient weatherApiClient, IRedisManager<WeatherResponse> redisManager)
+    public WeatherService(IWeatherApiClient weatherApiClient, IRedisManager redisManager)
     {
         _weatherApiClient = weatherApiClient;
         _redisManager = redisManager;
     }
 
-    public WeatherResponse GetWeather(string city)
+    public async Task<WeatherResponse> GetWeather(string city)
     {
-        var cachedResponse = _redisManager.GetValue(city);
-        if (cachedResponse != null)
-            return cachedResponse;
-        var apiResponse = _weatherApiClient.GetWeather(city);
-        _redisManager.SetValue(city, apiResponse);
+        var cachedResponse = await _redisManager.GetAsync(city);
+        if (cachedResponse.HasValue && !string.IsNullOrEmpty(cachedResponse))
+            return JsonConvert.DeserializeObject<WeatherResponse>(cachedResponse);
+        var apiResponse = await _weatherApiClient.GetWeather(city);
+        var serializedResponse = JsonConvert.SerializeObject(apiResponse);
+        await _redisManager.SetAsync(city, serializedResponse,TimeSpan.FromMinutes(10));
         return apiResponse;
     }
 }

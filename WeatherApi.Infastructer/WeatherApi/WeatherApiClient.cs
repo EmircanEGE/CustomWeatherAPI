@@ -15,15 +15,15 @@ public class WeatherApiClient : IWeatherApiClient
         _configuration = configuration;
     }
 
-    public WeatherResponse GetWeather(string location)
+    public async Task<WeatherResponse> GetWeather(string location)
     {
         var apiKey = _configuration["WeatherApiKey"];
         using var client = _httpClientFactory.CreateClient();
         var apiUrl = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={location}";
-        var response = client.GetAsync(apiUrl).Result;
+        var response = await client.GetAsync(apiUrl);
         if (!response.IsSuccessStatusCode)
             return null;
-        var responseContent = response.Content.ReadAsStringAsync().Result;
+        var responseContent = await response.Content.ReadAsStringAsync();
         var apiResponse = JsonConvert.DeserializeObject<WeatherApiResponse>(responseContent);
         return WeatherResponse.ConvertToWeatherResponse(apiResponse);
     }
