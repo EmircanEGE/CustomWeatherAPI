@@ -2,27 +2,26 @@
 using WeatherApi.Infastructer.WeatherApi;
 using WeatherApi.Infastructer.WeatherApi.Models;
 
-namespace WeatherApi.Application.Services
+namespace WeatherApi.Application.Services;
+
+public class WeatherService : IWeatherService
 {
-    public class WeatherService : IWeatherService
+    private readonly IRedisManager<WeatherResponse> _redisManager;
+    private readonly IWeatherApiClient _weatherApiClient;
+
+    public WeatherService(IWeatherApiClient weatherApiClient, IRedisManager<WeatherResponse> redisManager)
     {
-        private readonly IWeatherApiClient _weatherApiClient;
-        private readonly IRedisManager _redisManager;
+        _weatherApiClient = weatherApiClient;
+        _redisManager = redisManager;
+    }
 
-        public WeatherService(IWeatherApiClient weatherApiClient, IRedisManager redisManager)
-        {
-            _weatherApiClient = weatherApiClient;
-            _redisManager = redisManager;
-        }
-
-        public WeatherResponse GetWeather(string city)
-        {
-            WeatherResponse cachedResponse = _redisManager.GetWeather(city);
-            if (cachedResponse != null)
-                return cachedResponse;
-            WeatherResponse apiResponse = _weatherApiClient.GetWeather(city);
-            _redisManager.SetWeather(city, apiResponse);
-            return apiResponse;
-        }
+    public WeatherResponse GetWeather(string city)
+    {
+        var cachedResponse = _redisManager.GetValue(city);
+        if (cachedResponse != null)
+            return cachedResponse;
+        var apiResponse = _weatherApiClient.GetWeather(city);
+        _redisManager.SetValue(city, apiResponse);
+        return apiResponse;
     }
 }

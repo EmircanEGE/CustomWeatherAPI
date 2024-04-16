@@ -1,35 +1,29 @@
 ﻿using Newtonsoft.Json;
 using StackExchange.Redis;
-using WeatherApi.Infastructer.WeatherApi.Models;
 
-namespace WeatherApi.Infastructer.Redis
+namespace WeatherApi.Infastructer.Redis;
+
+public class RedisManager<T> : IRedisManager<T> where T : class
 {
-    public class RedisManager : IRedisManager
+    private readonly IDatabase _cache;
+    private readonly IConnectionMultiplexer _redisConnection;
+
+    public RedisManager(IConnectionMultiplexer redisConnection)
     {
-        private readonly IConnectionMultiplexer _redisConnection;
-        private readonly IDatabase _cache;
+        _redisConnection = redisConnection;
+        _cache = redisConnection.GetDatabase();
+    }
 
-        public RedisManager(IConnectionMultiplexer redisConnection)
-        {
-            _redisConnection = redisConnection;
-            _cache = redisConnection.GetDatabase();
-        }
+    public T GetValue(string key)
+    {
+        string cachedData = _cache.StringGet(key);
+        if (!string.IsNullOrEmpty(cachedData)) return JsonConvert.DeserializeObject<T>(cachedData);
+        return null;
+    }
 
-        public WeatherResponse GetWeather(string location)
-        {
-            string cachedData = _cache.StringGet(location);
-            if (!string.IsNullOrEmpty(cachedData))
-            {
-                return JsonConvert.DeserializeObject<WeatherResponse>(cachedData);
-            }
-
-            return null;
-        }
-
-        public void SetWeather(string location, WeatherResponse weather)
-        {
-            string serilizedWeather = JsonConvert.SerializeObject(weather);
-            _cache.StringSet(location, serilizedWeather, TimeSpan.FromMinutes(10));
-        }
+    public void SetValue(string key, T value)
+    {
+        var serilizedValue = JsonConvert.SerializeObject(value);
+        _cache.StringSet(key, serilizedValue, TimeSpan.FromMinutes(10));
     }
 }

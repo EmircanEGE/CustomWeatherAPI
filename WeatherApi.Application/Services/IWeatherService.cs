@@ -1,9 +1,8 @@
 ﻿using WeatherApi.Infastructer.WeatherApi.Models;
 
-namespace WeatherApi.Application.Services
+namespace WeatherApi.Application.Services;
+
+public interface IWeatherService
 {
-    public interface IWeatherService
-    {
-        WeatherResponse GetWeather(string city);
-    }
+    WeatherResponse GetWeather(string city);
 }

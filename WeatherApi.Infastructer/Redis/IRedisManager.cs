@@ -1,10 +1,7 @@
-﻿using WeatherApi.Infastructer.WeatherApi.Models;
+﻿namespace WeatherApi.Infastructer.Redis;
 
-namespace WeatherApi.Infastructer.Redis
+public interface IRedisManager<T>
 {
-    public interface IRedisManager
-    {
-        WeatherResponse GetWeather(string location);
-        void SetWeather(string location, WeatherResponse weather);
-    }
+    T GetValue(string key);
+    public void SetValue(string key, T value);
 }

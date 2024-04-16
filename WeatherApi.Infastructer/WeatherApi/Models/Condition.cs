@@ -1,7 +1,6 @@
-﻿namespace WeatherApi.Infastructer.WeatherApi.Models
+﻿namespace WeatherApi.Infastructer.WeatherApi.Models;
+
+public class Condition
 {
-    public class Condition
-    {
-        public string Text { get; set; }
-    }
+    public string Text { get; set; }
 }

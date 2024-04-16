@@ -1,9 +1,8 @@
 ﻿using WeatherApi.Infastructer.WeatherApi.Models;
 
-namespace WeatherApi.Infastructer.WeatherApi
+namespace WeatherApi.Infastructer.WeatherApi;
+
+public interface IWeatherApiClient
 {
-    public interface IWeatherApiClient
-    {
-        WeatherResponse GetWeather(string location);
-    }
+    WeatherResponse GetWeather(string location);
 }

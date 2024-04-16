@@ -1,8 +1,7 @@
-﻿namespace WeatherApi.Infastructer.WeatherApi.Models
+﻿namespace WeatherApi.Infastructer.WeatherApi.Models;
+
+public class WeatherApiResponse
 {
-    public class WeatherApiResponse
-    {
-        public CurrentWeather Current { get; set; }
-        public LocationWeather Location { get; set; }
-    }
+    public CurrentWeather Current { get; set; }
+    public LocationWeather Location { get; set; }
 }
