@@ -1,4 +1,4 @@
-﻿namespace WeatherApi.Infastructer.WeatherApi.Models;
+﻿namespace WeatherApi.Infrastructure.WeatherApi.Models;
 
 public class Condition
 {

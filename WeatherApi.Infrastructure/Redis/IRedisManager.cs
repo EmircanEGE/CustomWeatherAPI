@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace WeatherApi.Infastructer.Redis;
+namespace WeatherApi.Infrastructure.Redis;
 
 public interface IRedisManager
 {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using WeatherApi.Infastructer.Redis;
-using WeatherApi.Infastructer.WeatherApi;
-using WeatherApi.Infastructer.WeatherApi.Models;
+using WeatherApi.Infrastructure.Redis;
+using WeatherApi.Infrastructure.WeatherApi;
+using WeatherApi.Infrastructure.WeatherApi.Models;
 
 namespace WeatherApi.Application.Services;
 
@@ -23,7 +23,7 @@ public class WeatherService : IWeatherService
             return JsonConvert.DeserializeObject<WeatherResponse>(cachedResponse);
         var apiResponse = await _weatherApiClient.GetWeather(city);
         var serializedResponse = JsonConvert.SerializeObject(apiResponse);
-        await _redisManager.SetAsync(city, serializedResponse,TimeSpan.FromMinutes(10));
+        await _redisManager.SetAsync(city, serializedResponse, TimeSpan.FromMinutes(10));
         return apiResponse;
     }
 }

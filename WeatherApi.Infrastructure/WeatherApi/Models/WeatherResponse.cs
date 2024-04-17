@@ -1,4 +1,4 @@
-﻿namespace WeatherApi.Infastructer.WeatherApi.Models;
+﻿namespace WeatherApi.Infrastructure.WeatherApi.Models;
 
 public class WeatherResponse
 {
@@ -19,7 +19,7 @@ public class WeatherResponse
             Country = apiResponse.Location.Country,
             Latitude = apiResponse.Location.Lat,
             Longitude = apiResponse.Location.Lon,
-            Temperature = apiResponse.Current.Temp_C,
+            Temperature = apiResponse.Current.TempC,
             Description = apiResponse.Current.Condition.Text
         };
     }

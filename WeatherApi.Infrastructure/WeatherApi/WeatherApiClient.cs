@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using WeatherApi.Infastructer.WeatherApi.Models;
+using WeatherApi.Infrastructure.WeatherApi.Models;
 
-namespace WeatherApi.Infastructer.WeatherApi;
+namespace WeatherApi.Infrastructure.WeatherApi;
 
 public class WeatherApiClient : IWeatherApiClient
 {

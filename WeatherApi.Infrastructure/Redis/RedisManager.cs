@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace WeatherApi.Infastructer.Redis;
+namespace WeatherApi.Infrastructure.Redis;
 
 public class RedisManager : IRedisManager
 {
@@ -16,7 +16,6 @@ public class RedisManager : IRedisManager
     public async Task<RedisValue> GetAsync(string key)
     {
         return await _cache.StringGetAsync(key);
-        
     }
 
     public async Task SetAsync(string key, string value, TimeSpan expireTime)

@@ -1,4 +1,4 @@
-﻿using WeatherApi.Infastructer.WeatherApi.Models;
+﻿using WeatherApi.Infrastructure.WeatherApi.Models;
 
 namespace WeatherApi.Application.Services;
 
