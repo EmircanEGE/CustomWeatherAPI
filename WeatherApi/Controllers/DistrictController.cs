@@ -21,11 +21,10 @@ public class DistrictController : ControllerBase
         return Ok(district);
     }
 
-    [HttpGet("{district}")]
-    public async Task<IActionResult> Get(string district)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery]string district)
     {
         var districts = await _districtService.Get(district);
-        if (districts != null) return Ok(districts);
-        return NotFound($"İlçe bulunamadı: {district}");
+        return Ok(districts);
     }
 }

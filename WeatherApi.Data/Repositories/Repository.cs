@@ -13,7 +13,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         _dbSet = context.Set<T>();
     }
 
-    public IQueryable<T> GetAsync(Expression<Func<T, bool>> expression)
+    public IQueryable<T> Get(Expression<Func<T, bool>> expression)
     {
         return _dbSet.AsNoTracking().Where(expression);
     }

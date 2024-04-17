@@ -21,11 +21,10 @@ public class CityController : ControllerBase
         return Ok(city);
     }
 
-    [HttpGet("{city}")]
-    public async Task<IActionResult> Get(string city)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery]string city)
     {
         var cities = await _cityService.Get(city);
-        if (cities != null) return Ok(cities);
-        return NotFound($"İl bulunamadı: {city}");
+        return Ok(cities);
     }
 }

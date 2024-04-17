@@ -18,14 +18,14 @@ public class DistrictService : IDistrictService
 
     public async Task<DistrictDto> GetById(int id)
     {
-        var district = await _districtRepository.GetAsync(x => x.Id == id).FirstOrDefaultAsync();
+        var district = await _districtRepository.Get(x => x.Id == id).FirstOrDefaultAsync();
         if (district == null) return new DistrictDto();
         return DistrictDto.Map(district);
     }
 
     public async Task<List<DistrictDto>> Get(string name)
     {
-        var districts = _districtRepository.GetAsync(x => true);
+        var districts = _districtRepository.Get(x => true);
         if (!string.IsNullOrEmpty(name)) districts = districts.Where(x => x.Name == name);
         return districts.Select(x => DistrictDto.Map(x)).ToList();
     }
