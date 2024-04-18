@@ -27,7 +27,7 @@ public class DistrictService : IDistrictService
         var districts = _districtRepository.Get(x => true, i => i.City);
         if (!string.IsNullOrEmpty(name))
         {
-            districts = districts.Where(x => x.Name == name);
+            districts = districts.Where(x => x.Name.StartsWith(name.ToUpper()));
         }
         if (id != null)
         {

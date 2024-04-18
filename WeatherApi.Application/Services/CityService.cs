@@ -25,7 +25,7 @@ public class CityService : ICityService
     public async Task<List<CityDto>> Get(string name)
     {
         var cities = _cityRepository.Get(x => true);
-        if (!string.IsNullOrEmpty(name)) cities = cities.Where(x => x.Name == name);
+        if (!string.IsNullOrEmpty(name)) cities = cities.Where(x => x.Name.StartsWith(name.ToUpper()));
         return cities.Select(x => CityDto.Map(x)).ToList();
     }
 }

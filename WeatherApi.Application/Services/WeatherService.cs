@@ -23,28 +23,31 @@ public class WeatherService : IWeatherService
 
     public async Task<WeatherResponse> GetWeather(string city, int? cityId, int? districtId)
     {
+        string cityName = city;
         if (cityId != null)
         {
             var dbCity = _cityRepository.Get(x => x.Id == cityId).FirstOrDefault();
-            return await GetResponse(dbCity.Name);
+            if (dbCity != null)
+            {
+                cityName = dbCity.Name;
+            }
         }
-
-        if (districtId != null)
+        else if (districtId != null)
         {
             var dbDistrict = _districtRepository.Get(x => x.Id == districtId).FirstOrDefault();
-            return await GetResponse(dbDistrict.Name);
+            if (dbDistrict != null)
+            {
+                cityName = dbDistrict.Name;
+            }
         }
-        return await GetResponse(city);
-    }
 
-    public async Task<WeatherResponse> GetResponse(string city)
-    {
-        var cachedResponse = await _redisManager.GetAsync(city);
-        if (cachedResponse.HasValue && !string.IsNullOrEmpty(cachedResponse))
+        var cachedResponse = await _redisManager.GetAsync(cityName);
+        if (!string.IsNullOrEmpty(cachedResponse))
             return JsonConvert.DeserializeObject<WeatherResponse>(cachedResponse);
-        var apiResponse = await _weatherApiClient.GetWeather(city);
+
+        var apiResponse = await _weatherApiClient.GetWeather(cityName);
         var serializedResponse = JsonConvert.SerializeObject(apiResponse);
-        await _redisManager.SetAsync(city, serializedResponse, TimeSpan.FromMinutes(10));
+        await _redisManager.SetAsync(cityName, serializedResponse, TimeSpan.FromMinutes(10));
         return apiResponse;
     }
 }
