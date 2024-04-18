@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WeatherApi.Data.Repositories;
 using WeatherApi.Infrastructure.Redis;
 using WeatherApi.Infrastructure.WeatherApi;
 using WeatherApi.Infrastructure.WeatherApi.Models;

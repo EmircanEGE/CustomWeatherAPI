@@ -24,7 +24,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRedisManager, RedisManager>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IWeatherApiClient, WeatherApiClient>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICityRepository, CityRepository>();
 builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
 builder.Services.AddScoped<ICityService, CityService>();

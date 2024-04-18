@@ -8,12 +8,10 @@ namespace WeatherApi.Application.Services;
 public class CityService : ICityService
 {
     private readonly ICityRepository _cityRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public CityService(ICityRepository cityRepository, IUnitOfWork unitOfWork)
+    public CityService(ICityRepository cityRepository)
     {
         _cityRepository = cityRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<CityDto> GetById(int id)

@@ -22,9 +22,9 @@ public class DistrictController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery]string district)
+    public async Task<IActionResult> Get([FromQuery]int? id, int? cityId, string district)
     {
-        var districts = await _districtService.Get(district);
+        var districts = await _districtService.Get(id, cityId, district);
         return Ok(districts);
     }
 }

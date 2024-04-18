@@ -13,8 +13,17 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         _dbSet = context.Set<T>();
     }
 
-    public IQueryable<T> Get(Expression<Func<T, bool>> expression)
+    public IQueryable<T> Get(Expression<Func<T, bool>> expression, params Expression<Func<T, object>>[] includeParams)
     {
-        return _dbSet.AsNoTracking().Where(expression);
+        var q = _dbSet.AsNoTracking().AsQueryable();
+        if (includeParams != null)
+        {
+            foreach (var includeParam in includeParams)
+            {
+                q = q.Include(includeParam);
+            }
+        }
+        q = q.Where(expression);
+        return q;
     }
 }
