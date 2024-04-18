@@ -14,10 +14,10 @@ public class WeatherController : ControllerBase
         _weatherService = weatherService;
     }
 
-    [HttpGet("{city}")]
-    public async Task<IActionResult> GetWeather(string city)
+    [HttpGet]
+    public async Task<IActionResult> GetWeather(string city, int? cityId, int? districtId)
     {
-        var weather = await _weatherService.GetWeather(city);
+        var weather = await _weatherService.GetWeather(city, cityId, districtId);
         if (weather != null) return Ok(weather);
         return NotFound($"Hava durumu bilgileri bulunamadı: {city}");
     }
