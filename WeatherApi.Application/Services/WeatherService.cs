@@ -31,14 +31,17 @@ public class WeatherService : IWeatherService
             {
                 cityName = dbCity.Name;
             }
+
+            return new WeatherResponse();
         }
-        else if (districtId != null)
+        if (districtId != null)
         {
             var dbDistrict = _districtRepository.Get(x => x.Id == districtId).FirstOrDefault();
             if (dbDistrict != null)
             {
                 cityName = dbDistrict.Name;
             }
+            return new WeatherResponse();
         }
 
         var cachedResponse = await _redisManager.GetAsync(cityName);
