@@ -21,7 +21,7 @@ public class WeatherService : IWeatherService
         _cityRepository = cityRepository;
         _districtRepository = districtRepository;
     }
-
+    
     public async Task<WeatherResponse> GetWeather(string city, int? cityId, int? districtId)
     {
         var cityName = city;
@@ -31,7 +31,6 @@ public class WeatherService : IWeatherService
             if (dbCity != null)
                 cityName = dbCity.Name;
         }
-
         if (districtId != null)
         {
             var dbDistrict = _districtRepository.Get(x => x.Id == districtId).FirstOrDefault();
